@@ -5,3 +5,5 @@ Postup spuštění sítě:
 - Google Word2Vec model je možné stáhnout z: https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing
 - Ve třídě LauncherLSTM či LauncherCNN nastavit absolutní cesty k datům a Word2Vec modelům
 - Vytvořit instanci třídy, kterou chceme spustit (v kodu je již jedna vytvořena)
+
+Datová sada je převzata ze soutěže na kaggle.com : https://www.kaggle.com/c/fake-news
