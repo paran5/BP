@@ -1,0 +1,7 @@
+Postup spuštění sítě:
+
+- Stáhnout složku z https://drive.google.com/open?id=1PasMesUAKc4i0E5tHMTSdRlbWyTAirOI
+- Složku data je třeba rozbalit, Word2Vec modely se používají zazipované
+- Google Word2Vec model je možné stáhnout z: https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing
+- Ve třídě LauncherLSTM či LauncherCNN nastavit absolutní cesty k datům a Word2Vec modelům
+- Vytvořit instanci třídy, kterou chceme spustit (v kodu je již jedna vytvořena)
