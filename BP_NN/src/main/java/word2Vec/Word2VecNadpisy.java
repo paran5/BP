@@ -7,24 +7,17 @@ import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.text.sentenceiterator.FileSentenceIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
-import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.EndingPreProcessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * Vytvořené podle modelu od deeplearning4j
- * https://github.com/eclipse/deeplearning4j-examples/blob/master/dl4j-examples/src/main/java/org/deeplearning4j/examples/nlp/word2vec/Word2VecRawTextExample.java
- * 
- * vytvořené na všech datech (testovacích i trénovacích)
- */
-public class Word2VecModelCreator {
-    private static Logger log = LoggerFactory.getLogger(Word2VecModelCreator.class);
+public class Word2VecNadpisy {
+private static Logger log = LoggerFactory.getLogger(Word2VecModelCreator.class);
     
     //složka, ve které se nachází v příslušných podsložkách všechny textové soubory
-    private static final String test = "/users/Marek/Desktop/BP/data/labeleddatafiltered";
+    private static final String test = "/users/Marek/Desktop/BP/datanadpisy/all/2zprac";
     
     
     public static void main(String[] args) throws Exception {
@@ -33,15 +26,15 @@ public class Word2VecModelCreator {
         
         SentenceDataPreProcessor.setPreprocessor(iterator);
         final TokenizerFactory tokenizerFactory = new DefaultTokenizerFactory();
-        tokenizerFactory.setTokenPreProcessor(new CommonPreprocessor());
-
+        tokenizerFactory.setTokenPreProcessor(new EndingPreProcessor());
+        
         final Word2Vec model = new Word2Vec.Builder()
                                         .iterate(iterator)
                                         .tokenizerFactory(tokenizerFactory)
-                                        .minWordFrequency(5)
-                                        .layerSize(1)
+                                        .minWordFrequency(2)
+                                        .layerSize(32)
                                         .seed(42)
-                                        .epochs(10)
+                                        .epochs(20)
                                         .windowSize(5)
                                         .build();
         
@@ -59,6 +52,6 @@ public class Word2VecModelCreator {
         */
         
         // uložení modelu
-        WordVectorSerializer.writeWord2VecModel(model, "model1.zip");
-}}
-    
+        WordVectorSerializer.writeWord2VecModel(model, "modelnadpisy32.zip");
+}
+}

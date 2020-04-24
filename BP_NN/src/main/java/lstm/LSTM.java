@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * Vytvořené podle příkladu od deeplearning4j
  * https://github.com/eclipse/deeplearning4j-examples/blob/master/dl4j-examples/src/main/java/org/deeplearning4j/examples/recurrent/word2vecsentiment/Word2VecSentimentRNN.java
  */
-public class LSTMwithWord2Vec {
+public class LSTM {
 	
     /*
      * String dataFalse, String dataTrue, String dataTestFalse, String dataTestTrue, String wordVectorsPath, int vectorSize, int numOfEpochs
@@ -66,9 +66,7 @@ public class LSTMwithWord2Vec {
             		    .nIn(256)
             		    .nOut(256)
             		    .activation(Activation.RELU)
-            		    .dropOut(0.8)
-            		    .build())
-                
+            		    .build())                            
 
                 
                 .layer(new RnnOutputLayer.Builder().activation(Activation.SOFTMAX)
@@ -91,7 +89,8 @@ public class LSTMwithWord2Vec {
         
         //trénovaní
         System.out.println("Starting training");
-        net.setListeners(new ScoreIterationListener(1000), new EvaluativeListener(test, 1, InvocationType.EPOCH_END));
+        net.setListeners(new ScoreIterationListener(1000), new EvaluativeListener(train, 1, InvocationType.EPOCH_END));
+        net.addListeners(new EvaluativeListener(test, 1, InvocationType.EPOCH_END));
         net.fit(train, nEpochs);
 		
 	}

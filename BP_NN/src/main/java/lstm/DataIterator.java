@@ -26,7 +26,11 @@ import org.nd4j.linalg.indexing.NDArrayIndex;
  * třída převzatá z příkladů od deeplearning4j a upravená, původní na:
  * https://github.com/eclipse/deeplearning4j-examples/blob/master/dl4j-examples/src/main/java/org/deeplearning4j/examples/recurrent/word2vecsentiment/SentimentExampleIterator.java
  * 
- * kometáře ponechané v angličtině
+ * upravená pro použití na nerovnoměrně rozdělená dat
+ * odstraněný problém, kdy program spadl při načítání prázdného souboru
+ * odstraněný problém, kdy program spadl při načítání textu, jenž neměl žádné slovo stejné s použitým word2Vec modelem
+ * upravená chybná metoda pro počítání počtu souborů ve složkách
+ * původní komentáře ponechané v angličtině
  */
 public class DataIterator implements DataSetIterator{
 	private final WordVectors wordVectors;
@@ -35,7 +39,8 @@ public class DataIterator implements DataSetIterator{
     private final int truncateLength;
     
     private int cursor = 0; 
-    
+    int preskoceno = 0;
+
     private final File[] trueNews;
     private final File[] falseNews;
     
@@ -51,7 +56,6 @@ public class DataIterator implements DataSetIterator{
 
         falseNews = falseFiles.listFiles();
         trueNews = trueFiles.listFiles();
-        
         
         this.wordVectors = wordVectors;
         this.truncateLength = truncateLength;
@@ -115,13 +119,15 @@ public class DataIterator implements DataSetIterator{
         //Mask arrays contain 1 if data is present at that time step for that example, or 0 if data is just padding
         INDArray featuresMask = Nd4j.zeros(reviews.size(), maxLength);
         INDArray labelsMask = Nd4j.zeros(reviews.size(), maxLength);
-
+        
         for( int i=0; i<reviews.size(); i++ ){
             List<String> tokens = allTokens.get(i);
 
             // Get the truncated sequence length of document (i)
             int seqLength = Math.min(tokens.size(), maxLength);
-
+            if(seqLength==0) {
+            	preskoceno++;
+            } else {
             // Get all wordvectors for the current document and transpose them to fit the 2nd and 3rd feature shape
             final INDArray vectors = wordVectors.getWordVectors(tokens.subList(0, seqLength)).transpose();
 
@@ -142,8 +148,8 @@ public class DataIterator implements DataSetIterator{
             int lastIdx = Math.min(tokens.size(),maxLength);
             labels.putScalar(new int[]{i,idx,lastIdx-1},1.0);   //Set label: [0,1] for negative, [1,0] for positive
             labelsMask.putScalar(new int[]{i,lastIdx-1},1.0);   //Specify that an output exists at the final time step for this example
-        }
-
+        }}
+        
         return new DataSet(features,labels,featuresMask,labelsMask);
     }
 

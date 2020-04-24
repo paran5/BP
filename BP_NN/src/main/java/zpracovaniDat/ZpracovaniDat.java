@@ -33,7 +33,7 @@ public class ZpracovaniDat {
 	public static void main(String[] args) throws Exception{
 		
     	ZpracovaniDat hola = new ZpracovaniDat();
-		hola.TestovaciDataNadpisy(5);
+		hola.TestovaciDataTexty(100);
 		
 	}
 	
@@ -57,9 +57,17 @@ public class ZpracovaniDat {
             }
         }
 		
+		
+		for(int i=1; i< labels.size(); i++) {
+			String veta = texty.get(i);
+			String upravenaVeta = veta.replaceAll("[^a-zA-Z0-9\\s]", "");
+			texty.set(i, upravenaVeta);
+		}
+		
 		/*
 		 * analýza zda některá pole v datech nechybí či nějsou příliš krátká
 		 */
+		
 		for(int i=0; i<texty.size(); i++) {
 			if(texty.get(i).isEmpty()) {
 				System.out.println("chybí text v souboru s id " + i);
@@ -87,11 +95,11 @@ public class ZpracovaniDat {
 		
 		for(int i=1; i< labels.size(); i++) {
 			if(Integer.parseInt(labels.get(i)) == 0 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatafiltered/false", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatafiltered/falsetrain", String.valueOf(i)), texty.get(i));
 			}
 			
 			if(Integer.parseInt(labels.get(i)) == 1 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatafiltered/true", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatafiltered/truetrain", String.valueOf(i)), texty.get(i));
 			}
 			
 			}
@@ -117,7 +125,7 @@ public class ZpracovaniDat {
 		{
             String[] nextRecord;
             while ((nextRecord = csvReader.readNext()) != null) {
-                texty.add(nextRecord[1]);
+                texty.add(nextRecord[3]);
             }
         }
 		
@@ -129,9 +137,17 @@ public class ZpracovaniDat {
             }
         }
 		
+		
+		for(int i=1; i< labels.size(); i++) {
+			String veta = texty.get(i);
+			String upravenaVeta = veta.replaceAll("[^a-zA-Z0-9\\s]", "");
+			texty.set(i, upravenaVeta);
+		}
+		
 		/*
 		 * analýza zda některá pole v datech nechybí či nějsou příliš krátká
 		 */
+		
 		for(int i=0; i<texty.size(); i++) {
 			if(texty.get(i).isEmpty()) {
 				System.out.println("chybí text v souboru s id " + i);
@@ -159,12 +175,12 @@ public class ZpracovaniDat {
 		
 		for(int i=1; i< labels.size(); i++) {
 			if(Integer.parseInt(labels.get(i)) == 0 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatatestfiltered/false", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatatestfiltered/falsetest", String.valueOf(i)), texty.get(i));
 			falsetext++;
 			}
 			
 			if(Integer.parseInt(labels.get(i)) == 1 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatatestfiltered/true", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/data/labeleddatatestfiltered/truetest", String.valueOf(i)), texty.get(i));
 			truetext++;
 			}
 			
@@ -196,7 +212,14 @@ public class ZpracovaniDat {
             }
         }
 		
-		/*
+		
+		for(int i=1; i< labels.size(); i++) {
+			String veta = texty.get(i);
+			String upravenaVeta = veta.replaceAll("[^a-zA-Z0-9\\s]", "");
+			texty.set(i, upravenaVeta);
+		}
+		
+		
 		for(int i=0; i<texty.size(); i++) {
 			if(texty.get(i).isEmpty()) {
 				System.out.println("chybí text v souboru s id " + i);
@@ -220,18 +243,18 @@ public class ZpracovaniDat {
 		System.out.println("chybí label v "+ chybiLabel + " případech");
 		System.out.println("text kratší než "+ delkaTextu + " znaků v " + kratkyText + " případech");
 		
-		*/
+		
 
 		
 		
 		for(int i=1; i< labels.size(); i++) {
 			if(Integer.parseInt(labels.get(i)) == 0 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/false", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/false2", String.valueOf(i)), texty.get(i));
 			falsetext++;
 			}
 			
 			if(Integer.parseInt(labels.get(i)) == 1 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/true", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/true2", String.valueOf(i)), texty.get(i));
 			truetext++;
 			}
 			
@@ -265,6 +288,7 @@ public class ZpracovaniDat {
             }
         }
 		
+		
 		{
 
             String[] nextRecord;
@@ -272,6 +296,13 @@ public class ZpracovaniDat {
                 labels.add(nextRecord[1]);
             }
         }
+		
+		
+		for(int i=1; i< labels.size(); i++) {
+			String veta = texty.get(i);
+			String upravenaVeta = veta.replaceAll("[^a-zA-Z0-9\\s]", "");
+			texty.set(i, upravenaVeta);
+		}
 		
 		/*
 		 * analýza zda některá pole v datech nechybí či nějsou příliš krátká
@@ -303,12 +334,12 @@ public class ZpracovaniDat {
 		
 		for(int i=1; i< labels.size(); i++) {
 			if(Integer.parseInt(labels.get(i)) == 0 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/falsetest", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/falsetest2", String.valueOf(i)), texty.get(i));
 			falsetext++;
 			}
 			
 			if(Integer.parseInt(labels.get(i)) == 1 && texty.get(i).length() > delkaTextu) {
-			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/truetest", String.valueOf(i)), texty.get(i));
+			FileUtils.writeStringToFile(new File("/users/Marek/Desktop/BP/datanadpisy/all/truetest2", String.valueOf(i)), texty.get(i));
 			truetext++;
 			}
 			

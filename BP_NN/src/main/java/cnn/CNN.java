@@ -23,6 +23,8 @@ import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.conf.layers.PoolingType;
 import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.weights.WeightInit;
+import org.deeplearning4j.optimize.api.InvocationType;
+import org.deeplearning4j.optimize.listeners.EvaluativeListener;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.nd4j.evaluation.classification.Evaluation;
 import org.nd4j.linalg.activations.Activation;
@@ -37,7 +39,7 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
  * https://github.com/PacktPublishing/Java-Deep-Learning-Cookbook/blob/master/05_Implementing_NLP/sourceCode/cookbookapp/src/main/java/com/javadeeplearningcookbook/examples/CnnWord2VecSentenceClassificationExample.java
  */
 
-public class CNNwithWord2Vec {
+public class CNN {
 	
     /*
      * String dataFalse, String dataTrue, String dataTestFalse, String dataTestTrue, String wordVectorsPath, int vectorSize, int numOfEpochs
@@ -47,7 +49,7 @@ public class CNNwithWord2Vec {
 		//Globální nastavení sítě
         int batchSize = 32;
         int truncateReviewsToLength = 256;  
-
+        int nEpochs = numOfEpochs;
         int cnnLayerFeatureMaps = 100;      
         PoolingType globalPoolingType = PoolingType.MAX;
         Random rng = new Random(12345); 
@@ -103,22 +105,26 @@ public class CNNwithWord2Vec {
         WordVectors wordVectors = WordVectorSerializer.loadStaticModel(new File(wordVectorsPath));
         
         //volání metody pro tvorbu iterátorů
-        DataSetIterator trainIter = getDataSetIterator(dataFalse, dataTrue, wordVectors, batchSize, truncateReviewsToLength, rng);
+        DataSetIterator train = getDataSetIterator(dataFalse, dataTrue, wordVectors, batchSize, truncateReviewsToLength, rng);
         
-        DataSetIterator testIter = getDataSetIterator(dataTestFalse, dataTestTrue, wordVectors, batchSize, truncateReviewsToLength, rng);
+        DataSetIterator test = getDataSetIterator(dataTestFalse, dataTestTrue, wordVectors, batchSize, truncateReviewsToLength, rng);
 
         System.out.println("Starting training");
         net.setListeners(new ScoreIterationListener(100));
-
+        
+        /*
         for (int i = 0; i < numOfEpochs; i++) {
             net.fit(trainIter);
             System.out.println("Epoch " + i + " complete. Starting evaluation:");
 
             //po každé epoše vypíšeme úspěšnost
             Evaluation evaluation = net.evaluate(testIter);
-
             System.out.println(evaluation.stats());
-        }
+        }*/
+        
+        net.setListeners(new ScoreIterationListener(1000), new EvaluativeListener(train, 1, InvocationType.EPOCH_END));
+        net.addListeners(new EvaluativeListener(test, 1, InvocationType.EPOCH_END));
+        net.fit(train, nEpochs);
     }
 	
 	//metoda pro vytvoření iterátorů 
